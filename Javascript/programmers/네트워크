@@ -1,0 +1,37 @@
+function solution(n, computers) {
+    var answer = 0;
+    var check = [];
+    for(let i = 0; i < computers.length; i++)
+        check[i] = false;
+    
+    let hasFalse = false;
+    let queue = [];
+    
+    let idx = 0;
+    while(!hasFalse) {
+        answer++;
+        queue.push(computers[idx]);
+        while(queue.length){
+          //console.log(queue);
+            var item = queue.shift();
+            for(let i = 0; i < item.length; i++) {
+                if(!check[i] && item[i]) {
+                    queue.push(computers[i]);
+                    check[i] = true;
+                }
+            }
+        }   
+        hasFalse = true;
+        for(let i = 0; i < check.length; i++) {
+            if(!check[i]){
+                hasFalse = false;
+                idx = i;
+                break;
+            }
+        }
+        //console.log(check);
+    }
+        
+    return answer;
+
+}
