@@ -1,0 +1,52 @@
+function solution(N, stages) {
+    var answer = [];
+    var stayStages =[];
+    var stayDone =[];
+    var falseRate =[];
+    
+    for(var i = 0; i < N+2; i++) {
+        stayStages[i] = 0;
+        stayDone[i] = 0;
+    }
+    
+    for(var i = 0; i < stages.length; i++)
+        stayStages[stages[i]]++;
+    
+    for(var i = N; i > 0; i--) {
+        stayDone[i] = stayStages[i+1]+stayDone[i+1];
+    }
+    
+    //console.log(stayDone);
+    //console.log(stayStages);
+    
+    falseRate = stayDone.reduce(function(arry, val, index){
+        var fal = {stage : index, rate : 0};
+        if(val === 0){
+            if(stayStages[index] != 0)  
+                fal.rate = 1;
+            else
+                fal.rate = 0;
+        } 
+        else {
+            if(stayStages[index] === 0) {
+                fal.rate = 0;
+            }
+            else{
+                console.log(index,val+stayStages[index],stayStages[index]);
+                fal.rate =stayStages[index] / (val+stayStages[index]);
+            }
+        }
+        arry.push(fal);  
+        
+        return arry;
+    },[]);
+
+    falseRate.splice(0,1);
+    falseRate.splice(N,1);
+    falseRate.sort((A,B) => B.rate-A.rate);
+
+    answer = falseRate.map(x => x.stage);
+    
+    console.log(answer);
+    return answer;
+}
