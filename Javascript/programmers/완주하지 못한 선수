@@ -1,0 +1,19 @@
+function solution(participant, completion) {
+    
+    var check;
+    for(var i = 0; i < completion.length; i++) {
+        check = participant.indexOf(completion[i])
+        if(check != -1) {
+            participant.splice(check,1);
+        }
+    }
+    // completion.forEach(comp => {
+    //     var check = participant.indexOf(comp);
+    //     if(check != -1) {
+    //         participant.splice(check,1);
+    //     }
+    // })
+    
+    
+    return participant[0];
+}
