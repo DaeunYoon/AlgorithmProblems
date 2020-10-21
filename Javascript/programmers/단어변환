@@ -1,0 +1,48 @@
+function solution(begin, target, words) {
+    var wordsCnt = [];
+    var n = begin.length;
+    
+    /*target이랑 가까울 수록 앞에 있게 words sorting*/
+     for(var i = 0; i < words.length; i++) {
+         wordsCnt[i] = {w: words[i], cnt: 0};
+         for(var j = 0; j < n; j++){
+             if(words[i][j] === target[j]) 
+                 wordsCnt[i].cnt++;
+         }
+     }
+    wordsCnt.sort((A,B)=>B.cnt-A.cnt);
+    /*words에 target이 없음*/
+    if(wordsCnt[0].cnt != n)
+        return 0;
+    
+    var cnt = 0 ;
+    var same = 0;
+    var check = false;
+    
+    while(begin != target) {
+      check = false;
+      for(var i = 0;i < wordsCnt.length; i++) {
+          same = 0;
+          for(var j = 0; j < n; j++) {
+            if(wordsCnt[i].w[j] === begin[j]){
+                same++;
+                console.log(same);
+            }
+          }
+          /*한글자 빼고 같음*/
+          if(same === n-1) {
+              begin = wordsCnt[i].w;
+              wordsCnt.splice(i,1);
+              check = true;
+              break;
+          }
+      }
+
+      if(!check)
+        return 0;
+
+      cnt++;
+    }
+    
+    return cnt;
+}
