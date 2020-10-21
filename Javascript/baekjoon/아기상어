@@ -1,0 +1,152 @@
+function findShark(array,n) {
+  for(var i=0; i <n; i++){
+    var find = array[i].indexOf(9);
+    if(find != -1) {
+      return [i, find];
+    }
+  }
+  return [-1,-1];
+}
+
+function countFishes(array,n){
+    var cnt = 0;
+    for(var i = 0; i < n; i++){
+      for(var j = 0; j <n; j++){
+        if(array[i][j])
+          cnt++;
+      }
+    }
+  
+  return cnt-1;
+}
+
+
+/* 거리를 최단거리로 넣기  */
+function getDistanceArray(row,col,array,n, size){
+  var disArray =[];
+    for(var i = 0; i < n; i++){
+      disArray[i] = [];
+      for(var j = 0; j < n; j++){
+        if(array[i][j] > size){
+          disArray[i][j] = -1;
+          continue;
+        }
+        
+        /*default는 0 */
+        disArray[i][j] = 0;
+      }
+    }
+
+    for(var i = 0; i < n; i++){
+      for(var j = 0; j < n; j++)
+        if(array[i][j] < size && array[i][j]!=0) {
+          var path = findPathToFish({"row":i,"col":j}, {"row":row,"col":col}, disArray);
+          /* 최저값으로 바꿔주기 */
+          if(path[0])
+            disArray[i][j] = path[1];
+          else
+            disArray[i][j] = 0;
+        }
+    }
+  return disArray;
+}
+
+function countMin(array, n){
+  var min = n*n;
+    for(let i = 0; i < n; i++) {
+      for(let j = 0; j < n; j++) {
+        if(array[i][j] < min && (array[i][j] > 0)) {
+          min = array[i][j];
+        }
+      }
+    }
+    return min;
+}
+
+function findPathToFish(fish, shark, array) {
+  var check = false;
+  var queue = [shark];
+  var n = array.length;
+  var visited = [];
+  for(var i = 0; i < n; i++){
+    visited[i] = [];
+    for(var j = 0; j < n; j++){
+      visited[i][j] = 0;
+    }
+  }
+  while(queue.length) {
+    var item = queue.shift();
+    var iRow = item.row, iCol = item.col;
+
+    if(iRow === fish.row && iCol === fish.col) {
+      check = true;
+      return [check, visited[iRow][iCol]];
+    }
+    if(iRow+1 < n && array[iRow+1][iCol] != -1 && !visited[iRow+1][iCol]) {
+      queue.push({"row":iRow+1, "col":iCol});
+      visited[iRow+1][iCol] = visited[iRow][iCol]+1;
+    }
+    if(iRow-1 >= 0  && array[iRow-1][iCol] != -1 && !visited[iRow-1][iCol] ) {
+      queue.push({"row":iRow-1, "col":iCol});
+      visited[iRow-1][iCol] = visited[iRow][iCol]+1;
+    }
+    if(iCol+1 < n && array[iRow][iCol+1] != -1 && !visited[iRow][iCol+1]) {
+      queue.push({"row":iRow, "col":iCol+1});
+      visited[iRow][iCol+1] = visited[iRow][iCol]+1;
+    }
+    if(iCol-1 >= 0 && array[iRow][iCol-1] != -1 && !visited[iRow][iCol-1]) {
+      queue.push({"row":iRow, "col":iCol-1});
+      visited[iRow][iCol-1] = visited[iRow][iCol]+1;
+    }
+  }
+
+  return [check,-1];
+}
+
+
+function babyShark(array, n){
+  var size = 2;
+  var sizecnt = 0;
+  var shRow = 0,shCol = 0;
+  var fishes = countFishes(array,n);
+  var cnt = 0;
+  var disArray = [];
+ 
+  while(fishes) {
+    [shRow,shCol] = findShark(array,n);
+    disArray = getDistanceArray(shRow, shCol, array, n, size);
+    var queue = [];
+    var min = countMin(disArray,n);
+    if(min === n*n)
+      break;
+    var fish = {};
+    for(var i = 0; i < n; i++){
+      if(disArray[i].indexOf(min) != -1) {
+        fish = {"row": i, "col": disArray[i].indexOf(min)};
+        break;
+      }
+    }
+
+    array[fish.row][fish.col] = 9;
+    array[shRow][shCol] = 0;
+    fishes--;
+    sizecnt++;
+    if(sizecnt === size){
+      size++;
+      sizecnt = 0;
+    }
+    console.log("min: ", min, fish);
+    cnt+=min;     
+  }
+  return cnt;
+}
+
+
+var array = [[1, 1 ,1, 1, 1, 1],
+[2, 2 ,6 ,2, 2, 3],
+[2 ,2 ,5 ,2 ,2, 3],
+[2, 2, 2, 4 ,6 ,3],
+[0 ,0, 0, 0, 0, 6],
+[0, 0, 0, 0, 0, 9]];
+var n = 6;
+console.log(babyShark(array, n));
