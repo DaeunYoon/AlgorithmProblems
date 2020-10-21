@@ -1,0 +1,33 @@
+function solution(n, arr1, arr2) {
+    var answer = [];
+    var map = [[]];
+    for(var i = 0; i < arr1.length; i++) {
+        var map1 = [];
+        var map2 = [];
+        var val1 = arr1[i];
+        var val2 = arr2[i];
+        
+        for(var j = arr1.length; j > 0; j--) {
+            map1[j] = Math.floor(val1 / Math.pow(2,j-1));
+            val1 = val1 % Math.pow(2,j-1);
+            map2[j] = Math.floor(val2/ Math.pow(2,j-1));
+            val2 = val2 % Math.pow(2,j-1);
+        }
+        map[i] = map1.map(function(item, index) {
+            if(item || map2[index])
+                return 1;
+            else
+                return 0;     
+        });
+        map[i].reverse();
+        answer[i] = map[i].reduce(function(str, val) {
+           if(val === 1){
+               str += "#";
+           } else{
+               str +=" ";
+           }
+            return str;
+        },"")
+    }
+    return answer;
+}
