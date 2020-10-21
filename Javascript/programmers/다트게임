@@ -1,0 +1,51 @@
+function solution(dartResult) {
+    var answer = 0;
+//     var dartResultNum = dartResult.split(/[A-Z#*]/).filter(item => item != '');
+//     var dartResultType = dartResult.split(/[0-9#*]/)
+//                                     .filter(item => item != '');
+//     var dartResultOpt = new Array(3);
+    
+//     console.log(dartResultNum, dartResultType, dartResultOpt);
+    
+    var index = -1;
+    var numCheck = false;
+    var score = [0,0,0];
+    
+    for(var i = 0; i < dartResult.length; i++) {
+        var cur = dartResult[i];
+        if(!isNaN(cur)) {
+            index++;
+            if(numCheck){
+                index -= 1;
+                score[index] = 10;
+            } else {
+                score[index] = parseInt(cur);
+                numCheck = true;
+            }
+        } else if(cur === "#" || cur === "*") {
+            switch(cur) {
+                case "#": 
+                    score[index] *= -1; 
+                    break;
+                case "*": 
+                    score[index] *= 2;
+                    if(index != 0) score[index-1] *= 2;
+                    break;
+            }
+        } else {
+            numCheck = false;
+            switch(cur) {
+                case "D": score[index] = Math.pow(score[index],2);
+                            break;
+                case "T": score[index] = Math.pow(score[index],3);
+                            break;
+            }
+        }
+        
+    }
+    
+    
+    return score.reduce(function(val, cur) {
+        return val+cur;
+    },0);
+}
