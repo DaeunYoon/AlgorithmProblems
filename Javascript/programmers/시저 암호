@@ -1,0 +1,19 @@
+function solution(s, n) {    
+    const str = s.split('');
+    const ciper = str.reduce(function(c, v) {
+        if(v === ' '){
+            c += ' ';
+        }
+        else if(v.charCodeAt(0) < 'a'.charCodeAt(0)) {
+           c += String.fromCharCode(
+((v.charCodeAt(0) - 65 + n) % 26 ) + 65);
+        } else {
+            c += String.fromCharCode(
+((v.charCodeAt(0) - 'a'.charCodeAt(0) + n) % 26 ) + 'a'.charCodeAt(0));
+        }
+        
+        return c;
+    },'');
+    
+    return ciper;
+}
