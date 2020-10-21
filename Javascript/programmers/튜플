@@ -1,0 +1,34 @@
+function solution(s) {
+    
+    var res = s.split(/[{}]+/).filter(item => item.length >= 1 && item != ",");
+    
+    for(var i = 0; i < res.length; i++) {
+        res[i] = res[i].split(",").map(function(item){return parseInt(item)}); 
+    }
+    
+    res.sort((A,B)=>A.length-B.length);
+    
+    var answer = res.reduce(function(array, tuple){
+        var ch = new Array(tuple.length).fill(false);
+        for(var i = 0; i < tuple.length; i++) {
+            for(var j = 0; j < array.length; j++) {
+                if(array[j] == tuple[i]){
+                    ch[i] = true;
+                    break;
+                }
+            }
+            if(!ch[i]){
+                array.push(tuple[i]);
+                break;
+            }
+        }            
+        
+        return array;
+    },[])
+    
+    console.log(res);
+    
+
+    
+    return answer;
+}
