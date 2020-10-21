@@ -1,0 +1,21 @@
+function solution(skill, skill_trees) {
+    var answer = 0;
+    
+    for(var i = 0; i < skill_trees.length; i++) {
+        var check = true;
+        for(var j = 0; j < skill_trees[i].length && check; j++) {
+            if(skill.indexOf(skill_trees[i][j]) != -1) {
+                for(var k = 0; k < skill.indexOf(skill_trees[i][j]); k++) {
+                    if(skill_trees[i].slice(0,j+1).indexOf(skill[k]) === -1) {
+                        check = false;
+                        break;
+                    }
+                }
+            }
+        }
+        if(check)
+            answer++;
+    }
+    
+    return answer;
+}
