@@ -1,0 +1,27 @@
+function solution(progresses, speeds) {
+    var answer = [];
+    var finish = [];
+    
+    progresses.map(function(item, idx){
+        for(var i = 0;;i++){
+            if(item + speeds[idx]*i >= 100) {
+                finish[idx] = i;
+                break;
+            }
+        }
+    });
+  
+    var day = 0;
+    var idx = 0;
+    while(finish.length){
+      day = finish[0];
+      while(finish[idx]<= day){
+        idx++;
+      }
+      answer[answer.length] = idx;
+      finish.splice(0,idx);
+      idx = 0;
+    }
+
+    return answer;
+}
