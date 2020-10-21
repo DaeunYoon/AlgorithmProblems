@@ -1,0 +1,35 @@
+function solution(board, moves) {
+    var answer = 0;
+    var top =[];
+    var stack = [];
+    
+    for(var i = 0; i < board[0].length; i++) {
+        for(var j = 0; j < board[0].length;j++) {
+            if(board[i][j] != 0 && top[j] == undefined) {
+                top[j] = i;
+            }
+        }
+    } 
+    
+    var lasVal = -1;
+    for(var i = 0; i < moves.length; i++) {
+        var m = moves[i]-1;  
+        
+        if((top[m] < board[0].length) && (board[top[m]][m] != 0)) {
+            if((i > 0) 
+               && (stack[stack.length-1] === board[top[m]][m])) {
+                answer +=2;
+                stack.pop();                
+            } else {
+                stack.push(board[top[m]][m]); 
+            }
+            
+            top[m]++;
+        }
+        
+    }
+
+    
+    
+    return answer;
+}
