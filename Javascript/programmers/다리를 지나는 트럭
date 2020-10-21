@@ -1,0 +1,37 @@
+function solution(bLength, max, trucks_weight) {
+    var trucks = trucks_weight.reduce(function(arr, truck){
+        arr.push({"w": truck, "d": bLength});
+        return arr;
+    },[]);
+    
+    var time = 1;
+    var weight = 0;
+    var onBridge = [];
+    var crossed = 0;
+    //console.log(trucks);
+    
+    onBridge.push(trucks.shift());
+    weight += onBridge[0].w;
+    
+    while(trucks.length) {
+        time++;
+        
+        onBridge.forEach(truck=>truck.d--);
+        if(onBridge[0].d === 0){
+            weight -= onBridge[0].w;
+            onBridge.shift();
+        }
+        
+        if(weight+trucks[0].w <= max){
+            var truck = trucks.shift();
+            weight += truck.w;
+            onBridge.push(truck);
+        } 
+    }
+    
+    if(onBridge.length){
+        time += onBridge.pop().d;
+    }
+    
+    return time;
+}
