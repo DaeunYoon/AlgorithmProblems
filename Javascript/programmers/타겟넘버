@@ -1,0 +1,16 @@
+function dfs(idx, val, target, numbers) {
+    var cnt = 0;
+    if(idx > numbers.length)
+        return cnt;
+    
+    if(idx === numbers.length && val === target) {
+        cnt++;
+    }    
+    return cnt + dfs(idx+1, val + numbers[idx], target, numbers) 
+                + dfs(idx+1, val - numbers[idx], target, numbers); 
+    
+}
+
+function solution(numbers, target) {
+    return dfs(0, 0, target , numbers);
+}
