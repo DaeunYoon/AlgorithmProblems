@@ -1,0 +1,12 @@
+function solution(array, commands) {
+    var answer = [];
+    
+    commands.forEach(function(command){
+        var slicedArr = array.slice(command[0]-1,command[1]);
+        slicedArr.sort((a,b)=>a-b);
+//        console.log(slicedArr, command[0],command[1]);
+        answer.push(slicedArr[command[2]-1]);
+    })
+    
+    return answer;
+}
