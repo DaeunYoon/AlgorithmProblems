@@ -1,0 +1,36 @@
+function solution(n, lost, reserve) {
+    var answer = n;
+    var dupReserve;
+    
+    lost.sort();
+    reserve.sort();
+    
+    dupReserve = reserve.map(function(s) {
+        if(lost.indexOf(s) === -1)
+            return s;
+        else
+            lost.splice(lost.indexOf(s),1);
+    }).filter((s)=>s);
+    
+    console.log(dupReserve);
+    
+    answer -= lost.length;
+
+    for(var i = 0; i < lost.length; i++) {
+        var pre = dupReserve.indexOf(lost[i]-1);
+        var next = dupReserve.indexOf(lost[i]+1);
+        console.log(pre, next);
+        if(pre !== -1) {
+            /*splice안에는 index로 들어감*/
+            dupReserve.splice(pre,1);
+            answer++;
+        } else if(next !== -1) {
+            dupReserve.splice(next,1);
+            answer++;
+        }
+        
+    }
+    console.log(dupReserve);
+
+    return answer;
+}
